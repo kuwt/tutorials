@@ -11,7 +11,7 @@ from enum import Enum
 
 # define the two kinds of boundary: clamped and coupling Neumann Boundary
 def clamped_boundary(x, on_boundary):
-    return on_boundary and abs(x[1]) < tol
+    return on_boundary and abs(x[0]-3) < tol
 
 
 def neumann_boundary(x, on_boundary):
@@ -19,7 +19,7 @@ def neumann_boundary(x, on_boundary):
     determines whether a node is on the coupling boundary
 
     """
-    return on_boundary and ((abs(x[1] - 1) < tol) or abs(abs(x[0]) - W / 2) < tol)
+    return on_boundary and (   (abs(x[1] - 1) < tol) or (abs(x[1] - 1.25) < tol) or (abs(x[0] - 1) < tol)     )
 
 
 # Geometry and material properties
@@ -39,7 +39,7 @@ n_x_Direction = 26
 n_y_Direction = 4
 #mesh = RectangleMesh(Point(-W / 2, 0), Point(W / 2, H), n_x_Direction, n_y_Direction)
 mesh = RectangleMesh(Point(1, 1), Point(W+1 , H+1), n_x_Direction, n_y_Direction)
-h = Constant(H / n_y_Direction)
+#h = Constant(H / n_y_Direction)
 
 # create Function Space
 V = VectorFunctionSpace(mesh, 'P', 2)
@@ -75,7 +75,7 @@ fenics_dt = precice_dt  # if fenics_dt == precice_dt, no subcycling is applied
 # fenics_dt = 0.02  # if fenics_dt < precice_dt, subcycling is applied
 dt = Constant(np.min([precice_dt, fenics_dt]))
 
-# clamp the beam at the bottom
+# clamp the beam at the right
 bc = DirichletBC(V, Constant((0, 0)), fixed_boundary)
 
 # alpha method parameters

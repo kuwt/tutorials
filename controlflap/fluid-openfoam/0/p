@@ -16,12 +16,13 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value           uniform 0.3;
+        value           uniform 0.2;
     }
 
     outlet
     {
-        type            zeroGradient;
+        type            fixedValue;
+        value           uniform 0;
     }
 
     flap
